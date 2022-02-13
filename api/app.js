@@ -1,25 +1,14 @@
 const express = require('express');
-const mysql = require('mysql');
+const http = require('http');
 const bodyParser = require('body-parser');
-require('dotenv').config();
-
-const PORT = process.env.PORT || 3000;
-
 const app = express();
 
 app.use(bodyParser.json());
 
-const connection = mysql.createConnection({
-    host     : process.env.MYSQL_HOST,
-    user     : process.env.MYSQL_USER,
-    password : process.env.MYSQL_PWD,
-    database : process.env.MYSQL_DATABASE,
-    port: process.env.MYSQL_PORT
-});
-   
-connection.connect(error => {
-    if(error) throw error;
-    console.log("Database server connected");
-});
+const port = process.env.PORT || 3000;
+app.set('port', port);
 
-app.listen(PORT, () => console.log(`Server Running Port ${PORT}`))
+const server = http.createServer(app);
+server.listen(port);
+
+module.exports= app;
