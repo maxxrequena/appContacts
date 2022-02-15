@@ -1,8 +1,7 @@
-// const { Router } = require('express')
-// const router = Router();
-// const addContact = require('./addContacts')
+const { Router } = require('express');
+const router = Router();
+const addContact = require('../controllers/addContact')
 
+router.post('/contact', addContact);
 
-// router.post('/', addContact);
-
-// module.exports = router;
+module.exports = router;
