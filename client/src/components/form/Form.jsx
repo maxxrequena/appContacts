@@ -5,15 +5,14 @@ import { useEffect } from 'react';
 import { Formik } from "formik";
 import * as yup from 'yup';
 import { Container, TextField, Box, Button, Typography, Avatar, Autocomplete } from '@mui/material'
-import { loadCountries } from '../../redux/actions/countriesActions'
+import { loadCountries } from '../../redux/actions/loadCountries.js'
 import { useState } from 'react';
 
 
 let schema = yup.object().shape({
     name: yup.string().required('Name Required'),
     lastname: yup.string().required('Lastname Required'),
-    email: yup.string().email().required('Email Required'),
-    country: yup.string().required('Country required'),
+    email: yup.string().required('Email Required'),
 });
 
 
@@ -41,22 +40,22 @@ function FormContact() {
                     country: "",
                     comments: ""
                 }}
-                //validationSchema={schema}
-                onSubmit={async(values, {resetForm}) => {
-                    values.country = value; 
-                    try {
-                        const response = await axios.post("http://localhost:3001/contact", values)
-                        console.log(response);
-                        resetForm();
-                    } catch (error) {
-                        console.log(error);
-                    }
-                }}
-                // onSubmit={(values, { resetForm }) => {
-                //     values.country = value;
-                //     alert(JSON.stringify(values, null, 2));
-                //     resetForm();
+                validationSchema={schema}
+                // onSubmit={async(values, {resetForm}) => {
+                //     values.country = value; 
+                //     try {
+                //         const response = await axios.post("http://localhost:3001/contact", values)
+                //         console.log(response);
+                //         resetForm();
+                //     } catch (error) {
+                //         console.log(error);
+                //     }
                 // }}
+                onSubmit={(values, { resetForm }) => {
+                    values.country = value;
+                    alert(JSON.stringify(values, null, 2));
+                    resetForm();
+                }}
 
             >
                 {({
@@ -97,7 +96,8 @@ function FormContact() {
                                         fullWidth
                                         value={values.name}
                                         onChange={handleChange}
-                                        error={touched.name && Boolean(errors.name)}
+                                        error={Boolean(touched.name && errors.name)}
+                                        helperText={touched.name && errors.name}
                                     />
                                     <TextField
                                         id="lastname"
@@ -107,18 +107,19 @@ function FormContact() {
                                         fullWidth
                                         value={values.lastname}
                                         onChange={handleChange}
-                                        error={touched.lastname && Boolean(errors.lastname)}
+                                        error={Boolean(touched.lastname && errors.lastname)}
+                                        helperText={touched.lastname && errors.lastname}
                                     />
                                     <TextField
                                         id="email"
                                         name="email"
                                         label="Email"
-                                        type="email"
                                         margin="normal"
                                         fullWidth
                                         value={values.email}
                                         onChange={handleChange}
-                                        error={touched.email && Boolean(errors.email)}
+                                        error={Boolean(touched.email && errors.email)}
+                                        helperText={touched.email && errors.email}
                                     />
                                     <Autocomplete
                                         margin="normal"
@@ -128,9 +129,15 @@ function FormContact() {
                                         value={value}
                                         onChange={(event, newValue) => {
                                             setValue(newValue);
-                                        }}
+                                        }}country
                                         renderInput={(params) => 
-                                        <TextField {...params} label="Pais" />}
+                                        <TextField 
+                                        {...params} 
+                                        label="Pais"
+                                        id="country"
+                                        error={Boolean(touched.country && errors.country)}
+                                        helperText={touched.country && errors.country} 
+                                        />}
                                     />
                                     <TextField
                                         id="comments"
