@@ -8,11 +8,13 @@ import { Container, TextField, Box, Button, Typography, Avatar, Autocomplete } f
 import { loadCountries } from '../../redux/actions/loadCountries.js'
 import { useState } from 'react';
 import NavBar from '../navBar/NavBar.jsx';
+import Swal from 'sweetalert2'
+
 
 let schema = yup.object().shape({
     name: yup.string().required('Name Required'),
     lastname: yup.string().required('Lastname Required'),
-    email: yup.string().required('Email Required'),
+    email: yup.string().email().required('Required'),
 });
 
 
@@ -21,8 +23,8 @@ function FormContact() {
     const dispatch = useDispatch();
     const countries = useSelector((state) => state.countryReducer.countries)
 
-    const country = countries.map(c => c.name.common)
-    //const country = c.sort();
+    const c = countries.map(c => c.name.common)
+    const country = c.sort();
 
     useEffect(() => {
         dispatch(loadCountries());
@@ -51,8 +53,18 @@ function FormContact() {
                     try {
                         const response = await axios.post("http://localhost:3001/contact", values)
                         console.log(response);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Added Contact!',
+                            text: 'Your contact has been saved!',
+                          })
                         resetForm();
                     } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                          })
                         console.log(error);
                     }
                 }}

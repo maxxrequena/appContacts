@@ -1,13 +1,18 @@
 const express = require('express');
-const cors = require('cors')
 const app = express();
+const cors = require('cors')
 const mysql = require('mysql');
 
 const PORT = process.env.PORT || 3001;
 
 require('dotenv').config();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credentials: false,
+  })
+);
 app.use(express.json());
 
 const router = require('./routes/index')
