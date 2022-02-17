@@ -1,7 +1,10 @@
 # appContacts
 
+#
 
-###### SPA de contactos.
+###### SPA destinada solo a agendar contactos. 
+
+#
 
 
 #### Tech Stack :
