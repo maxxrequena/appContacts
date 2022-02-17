@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import axios from 'axios';
+import Home from '../../pages/Home/Home.jsx';
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from 'react';
 import { Formik } from "formik";
 import * as yup from 'yup';
 import { Container, TextField, Box, Button, Typography, Avatar, Autocomplete } from '@mui/material'
@@ -21,8 +21,12 @@ function FormContact() {
     const dispatch = useDispatch();
     const countries = useSelector((state)=> state.countryReducer.countries)
     
-    const c = countries.map(c => c.name.common)
-    const country = c.sort();
+    const country = countries.map(c => c.name.common)
+    //const country = c.sort();
+
+    useEffect(()=>{
+        dispatch(loadCountries());
+    },[dispatch])
 
     const [value, setValue] = useState(null);
 
@@ -32,6 +36,7 @@ function FormContact() {
 
     return (
         <div>
+            <Home/>
             <Formik
                 initialValues={{
                     name: "",
@@ -41,21 +46,22 @@ function FormContact() {
                     comments: ""
                 }}
                 validationSchema={schema}
-                // onSubmit={async(values, {resetForm}) => {
-                //     values.country = value; 
-                //     try {
-                //         const response = await axios.post("http://localhost:3001/contact", values)
-                //         console.log(response);
-                //         resetForm();
-                //     } catch (error) {
-                //         console.log(error);
-                //     }
-                // }}
-                onSubmit={(values, { resetForm }) => {
-                    values.country = value;
-                    alert(JSON.stringify(values, null, 2));
-                    resetForm();
+                onSubmit={async(values, {resetForm}) => {
+                    values.country = value; 
+                    try {
+                        const response = await axios.post("http://localhost:3001/contact", values)
+                        console.log(response);
+                        resetForm();
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }}
+                // UTILIZADO SOLO PARA TEST 
+                // onSubmit={(values, { resetForm }) => {
+                //     values.country = value;
+                //     alert(JSON.stringify(values, null, 2));
+                //     resetForm();
+                // }}
 
             >
                 {({
@@ -68,7 +74,7 @@ function FormContact() {
                     <Container maxWidth="xs">
                             <Box
                                 sx={{
-                                    marginTop: 8,
+                                    marginTop: 2,
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
@@ -104,6 +110,7 @@ function FormContact() {
                                         name="lastname"
                                         label="Apellido"
                                         margin="normal"
+                                        sx={{mt:1}}
                                         fullWidth
                                         value={values.lastname}
                                         onChange={handleChange}
@@ -114,7 +121,8 @@ function FormContact() {
                                         id="email"
                                         name="email"
                                         label="Email"
-                                        margin="normal"
+                                        //margin="normal"
+                                        sx={{mt:1}}
                                         fullWidth
                                         value={values.email}
                                         onChange={handleChange}
@@ -122,11 +130,12 @@ function FormContact() {
                                         helperText={touched.email && errors.email}
                                     />
                                     <Autocomplete
-                                        margin="normal"
+                                        //margin="normal"
                                         fullWidth
                                         sx={{mt:2}}
                                         options={country}
                                         value={value}
+                                        
                                         onChange={(event, newValue) => {
                                             setValue(newValue);
                                         }}country
@@ -148,7 +157,7 @@ function FormContact() {
                                         fullWidth
                                         multiline
                                         rows={2}
-                                        sx={{mt:3}}
+                                        sx={{mt:2}}
                                         value={values.comments}
                                         onChange={handleChange}
                                     />
@@ -157,20 +166,11 @@ function FormContact() {
                                         color="primary"
                                         variant="contained"
                                         type="submit"
-                                        sx={{ mt: 3, mb: 2 }}
+                                        //style={{ background: '#C0C0C0' }}
+                                        sx={{ mt: 1, mb: 2 }}
                                     >
                                         Submit
                                     </Button>
-                                    <Button
-                                        fullWidth
-                                        color="primary"
-                                        variant="contained"
-                                        //type="submit"
-                                        sx={{ mt: 0, mb: 2 }}
-                                    >
-                                        Volver
-                                    </Button>
-
                                 </Box>
                             </Box>
                     </Container>
