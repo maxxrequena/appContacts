@@ -7,9 +7,9 @@ module.exports = (req, res) => {
   VALUES 
   (?, ?, ?, ?, ?)`;
 
-  // if (!name || !lastname || !email || !country) {
-  //   res.status(400).send("Entries must have");
-  // }
+  if (!name || !lastname || !email || !country) {
+    res.status(400).send("Entries parametres");
+  }
   
   connection.query(sql, [name, lastname, email, country, comments],(err, result) => {
     console.log(err);

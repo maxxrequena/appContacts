@@ -5,12 +5,14 @@ import {
   DialogActions, 
   DialogContent, 
   DialogContentText, 
-  DialogTitle 
+  DialogTitle, 
+  Typography
 } from '@mui/material';
 import { AiOutlineMore } from "react-icons/ai";
 
 
-const OpenDialog = ({...props}) => {
+
+const OpenDialog = ({comments}) => {
 
   const [open, setOpen] = useState(false);
 
@@ -32,12 +34,18 @@ const OpenDialog = ({...props}) => {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        sx={{maxWidth:"100%"}}
       >
-        <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous location data to Google, even when no
-            apps are running.
+        <DialogTitle 
+        id="alert-dialog-title"
+        ><Typography
+        component="h1"
+        variant="h5" 
+        >Comments</Typography></DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText 
+          id="alert-dialog-description"
+          >{comments} 
           </DialogContentText>
         </DialogContent>
         <DialogActions>

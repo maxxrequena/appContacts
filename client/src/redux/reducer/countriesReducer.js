@@ -13,12 +13,6 @@ const countryReducer = (state = initialState, action) => {
                 ...state,
                 countries: action.payload
             };
-        case types.NAMES_COUNTRIES:
-            
-            return{
-                ...state,
-                
-            }
         default:
             return{
                 ...state,

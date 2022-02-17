@@ -3,15 +3,15 @@ import { Route, Routes } from 'react-router-dom';
 import Form from './components/form/Form'
 import ContactList from './components/contactList/ContactList'
 import Home from './pages/Home/Home'
-import OpenDialog from './components/dialog/OpenDialog'
+import AboutMe from './pages/aboutMe/AboutMe';
 
 function App() {
   return (
     <div>
       <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/d' element={<OpenDialog/>}/>
-        <Route exact path='/form' element={<Form/>}/>
+        <Route exact path='/' element={<Home/>}/>
+        <Route exact path='/aboutme' element={<AboutMe/>}/>
+        <Route exact path='/addcontact' element={<Form/>}/>
         <Route exact path='/contacts' element={<ContactList/>}/>
       </Routes>
 

@@ -1,8 +1,9 @@
 import React, { useEffect }  from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {getContacts} from '../../redux/actions/getContacts.js';
-import { Container, Typography } from '@mui/material'
+import { Button, Container, Typography } from '@mui/material';
 import OpenDialog from '../dialog/OpenDialog.jsx';
+import DeleteContact from './DeleteContact.jsx';
 import Home from '../../pages/Home/Home';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,7 +12,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import NavBar from '../navBar/NavBar.jsx';
 
 
 const ContactList = () => {
@@ -21,12 +22,12 @@ const ContactList = () => {
     useEffect(()=> {
         dispatch(getContacts());
     },[dispatch])
- 
-    const rows = useSelector((state) => state.contactsReducer.contacts)
+
+    const rows = useSelector((state) => state.contactsReducer.contacts);
 
     return (
         <div>
-            <Home/>
+            <NavBar />
             <Container>
                 <Typography
                 component="h1"
@@ -52,17 +53,20 @@ const ContactList = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map((row) => (
-                                <TableRow
+                            {rows.length ? 
+                             rows.map((row) =>{
+                                return (
+                                    <TableRow
                                     key={row.idcontacts}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell component="th" scope="row">{row.name} {row.lastname}</TableCell>
-                                    <TableCell align="center"><DeleteForeverOutlinedIcon/></TableCell>
+                                    <TableCell align="center"><Button><DeleteContact id={row.idcontacts}/></Button></TableCell>
                                     <TableCell align="center">{row.email}</TableCell>
                                     <TableCell align="center">{row.country}</TableCell>
-                                    <TableCell align="center" onClick={OpenDialog(row.comments)}><OpenDialog /></TableCell>
+                                    <TableCell align="center"><OpenDialog comments={row.comments}/></TableCell>
                                 </TableRow>
-                            ))}
+                                 )
+                            }): null}
                         </TableBody>
                     </Table>
                 </TableContainer>
